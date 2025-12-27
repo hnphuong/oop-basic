@@ -1,0 +1,78 @@
+{
+  "explorer.confirmDelete": false,
+  "editor.fontSize": 13,
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Default Dark+",
+  "explorer.confirmDragAndDrop": false,
+  "redhat.telemetry.enabled": true,
+  "openapi.securityAuditToken": "CiBiCxk0h4hVZzVyr6ZG6+15MRsVVyyl4554wOYV7K4CzxIYg7zN3EkpCR+uyATUF9ReHXFNmBtO4gfbGnb3RNZf+mwvzn2l8Bq1/JikTuR8kdMhdSsM5agF0QcLNBsN9y1Z/Y5YI0JPqBcY4vRKWGd7UnVFAEyehCEEWJnOAm5yroh3AuJsgiGIhLcxmar3mhN+aKn4NOE0DaiQ9wadMVZdzLe8axjF5zU0v7HjMrXdYHII",
+  "openapi.platformAuthType": "anond-token",
+  "git.autofetch": true,
+  "debug.onTaskErrors": "abort",
+  "docker.extension.enableComposeLanguageServer": false,
+  "editor.largeFileOptimizations": false,
+  "makefile.configureOnOpen": true,
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "python": true
+  },
+  "refactai.addressURL": "Refact",
+  "refactai.apiKey": "Ti6k4VLh7AxCsnUprTkQexGR",
+  "refactai.pauseCompletion": true,
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "jdk.telemetry.enabled": true,
+  "editor.suggest.selectionMode": "never",
+  "editor.suggestOnTriggerCharacters": false,
+  "editor.quickSuggestions": {
+    "other": false,
+    "comments": false,
+    "strings": false
+  },
+  "editor.suggestSelection": "recentlyUsed",
+  "files.autoSave": "afterDelay",
+  "editor.acceptSuggestionOnEnter": "off",
+  "json.schemas": [],
+  "editor.inlineSuggest.edits.renderSideBySide": "never",
+  "editor.inlineSuggest.edits.allowCodeShifting": "never",
+  "editor.inlineSuggest.edits.showLongDistanceHint": false,
+  "github.copilot.nextEditSuggestions.allowWhitespaceOnlyChanges": false,
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "github.copilot.nextEditSuggestions.fixes": false,
+  "[python]": {
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    },
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.parameterHints.enabled": false,
+    "editor.parameterHints": false
+  },
+  "python.languageServer": "None",
+  "editor.suggestOnTriggerCharacters": false,
+  "editor.quickSuggestions": {
+    "other": false,
+    "comments": false,
+    "strings": false
+  },
+  "editor.acceptSuggestionOnEnter": "off"
+}

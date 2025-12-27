@@ -1,0 +1,137 @@
+Đúng.
+`def __lt__(self, other):` **là override**.
+
+Cụ thể hơn: bạn đang **override (ghi đè)** *magic method* `__lt__` của **lớp gốc `object`** để **thay đổi cách so sánh `<` giữa hai object**.
+
+---
+
+## 1. `__lt__` là override cái gì?
+
+Trong Python, **mọi class đều ngầm kế thừa từ `object`**:
+
+```python
+class Student(object):
+    ...
+```
+
+`object` đã **định nghĩa sẵn** các *magic methods* (special methods).
+Khi bạn viết lại chúng trong class của mình → **override**.
+
+```python
+def __lt__(self, other):
+    ...
+```
+
+👉 Bạn đã override **hành vi mặc định** của toán tử `<`.
+
+---
+
+## 2. Vì sao override `__lt__` thì `sort()` hoạt động?
+
+* `list.sort()` và `sorted()` **gọi toán tử `<`**
+* Toán tử `<` → gọi `__lt__`
+* Bạn override `__lt__` → Python biết cách so sánh `Student`
+
+---
+
+## 3. Các hàm override (magic methods) QUAN TRỌNG cần nắm
+
+### 🔹 Nhóm khởi tạo & biểu diễn object
+
+| Method     | Khi nào được gọi         |
+| ---------- | ------------------------ |
+| `__init__` | Khi tạo object           |
+| `__str__`  | `print(obj)`             |
+| `__repr__` | In trong console / debug |
+
+---
+
+### 🔹 Nhóm so sánh (rất hay dùng khi sort)
+
+| Method   | Toán tử |
+| -------- | ------- |
+| `__lt__` | `<`     |
+| `__le__` | `<=`    |
+| `__eq__` | `==`    |
+| `__ne__` | `!=`    |
+| `__gt__` | `>`     |
+| `__ge__` | `>=`    |
+
+📌 **Chỉ cần `__lt__` là đủ cho `sort()`**
+📌 Nếu muốn so sánh đầy đủ → override thêm `__eq__`
+
+---
+
+### 🔹 Nhóm toán tử số học
+
+| Method         | Toán tử |
+| -------------- | ------- |
+| `__add__`      | `+`     |
+| `__sub__`      | `-`     |
+| `__mul__`      | `*`     |
+| `__truediv__`  | `/`     |
+| `__floordiv__` | `//`    |
+| `__mod__`      | `%`     |
+
+---
+
+### 🔹 Nhóm container / collection
+
+| Method         | Ý nghĩa      |
+| -------------- | ------------ |
+| `__len__`      | `len(obj)`   |
+| `__getitem__`  | `obj[i]`     |
+| `__setitem__`  | `obj[i] = x` |
+| `__contains__` | `x in obj`   |
+| `__iter__`     | for-loop     |
+
+---
+
+### 🔹 Nhóm gọi object như hàm
+
+| Method     | Ý nghĩa |
+| ---------- | ------- |
+| `__call__` | `obj()` |
+
+---
+
+### 🔹 Nhóm chuyển kiểu
+
+| Method      | Dùng khi     |
+| ----------- | ------------ |
+| `__int__`   | `int(obj)`   |
+| `__float__` | `float(obj)` |
+| `__bool__`  | `if obj:`    |
+
+---
+
+## 4. Ví dụ minh họa override rõ ràng
+
+### Không override → sort lỗi
+
+```python
+students.sort()
+# TypeError: '<' not supported between instances of 'Student'
+```
+
+### Override `__lt__` → sort OK
+
+```python
+def __lt__(self, other):
+    return self.total > other.total
+```
+
+---
+
+## 5. Tóm tắt ngắn gọn (đúng thuật ngữ)
+
+* ✅ `__lt__` **là override**
+* ✅ Override magic method = **thay đổi hành vi toán tử / built-in**
+* ✅ `sort()` → dùng `__lt__`
+* ✅ Python **không cần keyword `override`** như Java
+
+---
+
+## 6. Câu trả lời mẫu nếu bị hỏi miệng / vấn đáp
+
+> "`__lt__` là phương thức đặc biệt được override từ lớp `object`, dùng để định nghĩa lại cách so sánh hai đối tượng khi sử dụng toán tử `<`, từ đó cho phép sắp xếp các đối tượng tùy chỉnh bằng `sort()`."
