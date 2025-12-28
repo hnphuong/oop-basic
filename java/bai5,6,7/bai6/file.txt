@@ -1,0 +1,549 @@
+Dưới đây là **hướng dẫn đọc – ghi file trong Java**, đi từ **cơ bản → thực tế**, kèm **ví dụ minh hoạ rõ ràng**.
+
+---
+
+## 1️⃣ Ghi file văn bản (`.txt`)
+
+### Cách 1: `FileWriter` + `BufferedWriter` (phổ biến, dễ dùng)
+
+```java
+import java.io.*;
+
+public class WriteFileExample {
+    public static void main(String[] args) {
+        try {
+            BufferedWriter bw = new BufferedWriter(
+                    new FileWriter("output.txt")
+            );
+
+            bw.write("Hello Java");
+            bw.newLine();
+            bw.write("Ghi file thanh cong!");
+
+            bw.close(); // rất quan trọng
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+📌 Kết quả tạo file `output.txt`:
+
+```
+Hello Java
+Ghi file thanh cong!
+```
+
+---
+
+### Ghi **append** (ghi thêm, không xoá file cũ)
+
+```java
+new FileWriter("output.txt", true);
+```
+
+---
+
+## 2️⃣ Đọc file văn bản
+
+### Cách 1: `FileReader` + `BufferedReader` (chuẩn thi OOP)
+
+```java
+import java.io.*;
+
+public class ReadFileExample {
+    public static void main(String[] args) {
+        try {
+            BufferedReader br = new BufferedReader(
+                    new FileReader("output.txt")
+            );
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+---
+
+## 3️⃣ Đọc & ghi file bằng `try-with-resources` (khuyến nghị)
+
+✔️ Tự động đóng file
+✔️ An toàn, ngắn gọn
+
+```java
+import java.io.*;
+
+public class FileIOExample {
+    public static void main(String[] args) {
+
+        // Ghi file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("data.txt"))) {
+            bw.write("Dong 1");
+            bw.newLine();
+            bw.write("Dong 2");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Đọc file
+        try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+---
+
+## 4️⃣ Ví dụ thực tế: Đọc danh sách → xử lý → ghi kết quả
+
+### Input (`input.txt`)
+
+```
+3
+ML01
+May lanh SANYO
+12
+4000000
+2400000
+```
+
+### Code xử lý & ghi ra file
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class InvoiceFileIO {
+
+    static class HoaDon {
+        String ma, ten;
+        int soLuong;
+        long donGia, chietKhau, tongTien;
+
+        HoaDon(String ma, String ten, int soLuong, long donGia, long chietKhau) {
+            this.ma = ma;
+            this.ten = ten;
+            this.soLuong = soLuong;
+            this.donGia = donGia;
+            this.chietKhau = chietKhau;
+            this.tongTien = soLuong * donGia - chietKhau;
+        }
+
+        @Override
+        public String toString() {
+            return ma + " " + ten + " " + soLuong + " " + donGia + " " + chietKhau + " " + tongTien;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader("input.txt"));
+        BufferedWriter bw = new BufferedWriter(new FileWriter("output.txt"));
+
+        int n = Integer.parseInt(br.readLine().trim());
+        List<HoaDon> list = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            String ma = br.readLine();
+            String ten = br.readLine();
+            int soLuong = Integer.parseInt(br.readLine());
+            long donGia = Long.parseLong(br.readLine());
+            long chietKhau = Long.parseLong(br.readLine());
+
+            list.add(new HoaDon(ma, ten, soLuong, donGia, chietKhau));
+        }
+
+        list.sort((a, b) -> Long.compare(b.tongTien, a.tongTien));
+
+        for (HoaDon hd : list) {
+            bw.write(hd.toString());
+            bw.newLine();
+        }
+
+        br.close();
+        bw.close();
+    }
+}
+```
+
+---
+
+## 5️⃣ Khi nào dùng cái nào?
+
+| Trường hợp               | Nên dùng                             |
+| ------------------------ | ------------------------------------ |
+| File text, bài thi OJ    | `BufferedReader / BufferedWriter`    |
+| File nhỏ, nhanh gọn      | `Scanner / PrintWriter`              |
+| File nhị phân (ảnh, pdf) | `FileInputStream / FileOutputStream` |
+| Java hiện đại            | `Files.readAllLines()`               |
+
+Dưới đây là **2 ví dụ độc lập, dễ hiểu và đúng thực tế** về **đọc CSV** và **đọc JSON trong Java**.
+(Toàn bộ nội dung **có thể kiểm chứng trực tiếp bằng code**, không suy đoán.)
+
+---
+
+# I️⃣ Ví dụ đọc file CSV trong Java
+
+## 1. File CSV mẫu (`data.csv`)
+
+```
+ML01,May lanh SANYO,12,4000000,2400000
+ML02,May lanh HITACHI,4,2550000000,0
+ML03,May lanh NATIONAL,5,3000000,150000
+```
+
+📌 CSV ở đây:
+
+* Mỗi dòng = 1 bản ghi
+* Các cột phân cách bằng dấu `,`
+
+---
+
+## 2. Code Java đọc CSV (không dùng thư viện ngoài)
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class ReadCSVExample {
+
+    static class HoaDon {
+        String ma, ten;
+        int soLuong;
+        long donGia, chietKhau, tongTien;
+
+        HoaDon(String ma, String ten, int soLuong, long donGia, long chietKhau) {
+            this.ma = ma;
+            this.ten = ten;
+            this.soLuong = soLuong;
+            this.donGia = donGia;
+            this.chietKhau = chietKhau;
+            this.tongTien = soLuong * donGia - chietKhau;
+        }
+
+        @Override
+        public String toString() {
+            return ma + " | " + ten + " | " + tongTien;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader("data.csv"));
+        List<HoaDon> list = new ArrayList<>();
+
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(",");
+
+            String ma = parts[0];
+            String ten = parts[1];
+            int soLuong = Integer.parseInt(parts[2]);
+            long donGia = Long.parseLong(parts[3]);
+            long chietKhau = Long.parseLong(parts[4]);
+
+            list.add(new HoaDon(ma, ten, soLuong, donGia, chietKhau));
+        }
+        br.close();
+
+        for (HoaDon hd : list) {
+            System.out.println(hd);
+        }
+    }
+}
+```
+
+📌 **Khi nào dùng cách này**
+
+* Bài thi OJ
+* CSV đơn giản
+* Không cần xử lý dấu `"` phức tạp
+
+---
+
+# II️⃣ Ví dụ đọc file JSON trong Java
+
+⚠️ Java **không có sẵn parser JSON chuẩn**, nên **bắt buộc dùng thư viện**.
+Ví dụ dưới dùng **Gson (Google)** — rất phổ biến.
+
+---
+
+## 1. File JSON mẫu (`data.json`)
+
+```json
+[
+  {
+    "ma": "ML01",
+    "ten": "May lanh SANYO",
+    "soLuong": 12,
+    "donGia": 4000000,
+    "chietKhau": 2400000
+  },
+  {
+    "ma": "ML02",
+    "ten": "May lanh HITACHI",
+    "soLuong": 4,
+    "donGia": 2550000000,
+    "chietKhau": 0
+  }
+]
+```
+
+---
+
+## 2. Thêm thư viện Gson
+
+### Nếu dùng Maven
+
+```xml
+<dependency>
+  <groupId>com.google.code.gson</groupId>
+  <artifactId>gson</artifactId>
+  <version>2.10.1</version>
+</dependency>
+```
+
+### Nếu không dùng Maven
+
+* Tải file `gson-2.10.1.jar`
+* Add vào classpath
+
+---
+
+## 3. Class Java mapping JSON
+
+```java
+class HoaDon {
+    String ma;
+    String ten;
+    int soLuong;
+    long donGia;
+    long chietKhau;
+
+    long getTongTien() {
+        return soLuong * donGia - chietKhau;
+    }
+}
+```
+
+---
+
+## 4. Code Java đọc JSON bằng Gson
+
+```java
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.util.*;
+
+public class ReadJSONExample {
+
+    public static void main(String[] args) throws Exception {
+        Gson gson = new Gson();
+
+        Reader reader = new FileReader("data.json");
+        Type listType = new TypeToken<List<HoaDon>>() {}.getType();
+
+        List<HoaDon> list = gson.fromJson(reader, listType);
+        reader.close();
+
+        for (HoaDon hd : list) {
+            System.out.println(
+                hd.ma + " | " + hd.ten + " | " + hd.getTongTien()
+            );
+        }
+    }
+}
+```
+
+---
+
+## III️⃣ So sánh nhanh CSV vs JSON
+
+| Tiêu chí          | CSV  | JSON |
+| ----------------- | ---- | ---- |
+| Dễ đọc            | ⭐⭐⭐⭐ | ⭐⭐⭐  |
+| Không cần lib     | ✅    | ❌    |
+| Cấu trúc phức tạp | ❌    | ✅    |
+| Backend / API     | ❌    | ✅    |
+| Bài thi OJ        | ✅    | ❌    |
+
+---
+
+## IV️⃣ Khi nào nên dùng gì?
+
+* **Thi Java, OOP, xử lý dữ liệu đơn giản** → CSV
+* **Backend, REST API, config file** → JSON
+* **Hệ thống lớn** → JSON + Gson/Jackson
+
+[Unverified] Phần **đọc JSON không dùng thư viện** dưới đây **chỉ áp dụng cho JSON rất đơn giản** (phẳng, không lồng sâu, không ký tự đặc biệt). Java **không có JSON parser chuẩn built-in**, nên cách này **không an toàn cho JSON tổng quát**. Mình sẽ nói rõ giới hạn.
+
+---
+
+# I️⃣ Đọc CSV bằng **Java thuần** (KHÔNG thư viện)
+
+👉 Cách này **chuẩn, an toàn, dùng được trong thi + thực tế** (với CSV đơn giản).
+
+## 1. File `data.csv`
+
+```
+ML01,May lanh SANYO,12,4000000,2400000
+ML02,May lanh HITACHI,4,2550000000,0
+```
+
+## 2. Java code đọc CSV
+
+```java
+import java.io.*;
+
+public class ReadCSV {
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader("data.csv"));
+
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] p = line.split(",");
+
+            String ma = p[0];
+            String ten = p[1];
+            int soLuong = Integer.parseInt(p[2]);
+            long donGia = Long.parseLong(p[3]);
+            long chietKhau = Long.parseLong(p[4]);
+
+            long tongTien = soLuong * donGia - chietKhau;
+
+            System.out.println(ma + " " + ten + " " + tongTien);
+        }
+
+        br.close();
+    }
+}
+```
+
+📌 **Giới hạn**
+
+* Không xử lý được CSV có dấu `,` nằm trong chuỗi `"..."`
+
+---
+
+# II️⃣ Đọc JSON bằng **Java thuần (KHÔNG thư viện)**
+
+⚠️ **CẢNH BÁO RÕ**
+
+* Đây là **parse thủ công**
+* **Chỉ dùng cho JSON đơn giản**
+* Không khuyến nghị cho production
+
+---
+
+## 1. File `data.json` (bắt buộc đúng format này)
+
+```json
+[
+  {"ma":"ML01","ten":"May lanh SANYO","soLuong":12,"donGia":4000000,"chietKhau":2400000},
+  {"ma":"ML02","ten":"May lanh HITACHI","soLuong":4,"donGia":2550000000,"chietKhau":0}
+]
+```
+
+✔ Không xuống dòng trong object
+✔ Không object lồng
+✔ Không mảng con
+
+---
+
+## 2. Java code parse JSON **bằng String**
+
+```java
+import java.io.*;
+
+public class ReadJSONManual {
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader("data.json"));
+        StringBuilder sb = new StringBuilder();
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            sb.append(line.trim());
+        }
+        br.close();
+
+        String json = sb.toString();
+
+        // Bỏ [ ]
+        json = json.substring(1, json.length() - 1);
+
+        // Tách từng object
+        String[] objects = json.split("\\},\\{");
+
+        for (String obj : objects) {
+            obj = obj.replace("{", "").replace("}", "");
+
+            String[] fields = obj.split(",");
+
+            String ma = "", ten = "";
+            int soLuong = 0;
+            long donGia = 0, chietKhau = 0;
+
+            for (String f : fields) {
+                String[] kv = f.split(":");
+                String key = kv[0].replace("\"", "");
+                String value = kv[1].replace("\"", "");
+
+                switch (key) {
+                    case "ma": ma = value; break;
+                    case "ten": ten = value; break;
+                    case "soLuong": soLuong = Integer.parseInt(value); break;
+                    case "donGia": donGia = Long.parseLong(value); break;
+                    case "chietKhau": chietKhau = Long.parseLong(value); break;
+                }
+            }
+
+            long tongTien = soLuong * donGia - chietKhau;
+            System.out.println(ma + " | " + ten + " | " + tongTien);
+        }
+    }
+}
+```
+
+---
+
+## III️⃣ Vì sao **JSON thuần Java không nên dùng**
+
+| Vấn đề          | CSV | JSON |
+| --------------- | --- | ---- |
+| Java hỗ trợ sẵn | ✅   | ❌    |
+| Parse an toàn   | ✅   | ❌    |
+| Lồng object     | ❌   | ❌    |
+| Escape ký tự    | ❌   | ❌    |
+| Production      | ⚠️  | ❌    |
+
+👉 **Kết luận chính xác**
+
+* CSV → Java thuần OK
+* JSON → **bắt buộc thư viện** nếu làm nghiêm túc
+
+---
+
+## IV️⃣ Khi nào giáo viên vẫn cho làm JSON thuần?
+
+[Inference]
+
+* Bài **môn Java cơ bản**
+* JSON **cố tình đơn giản**
+* Mục tiêu là **xử lý chuỗi**, không phải backend
