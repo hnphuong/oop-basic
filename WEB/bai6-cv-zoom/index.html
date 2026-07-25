@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới Thiệu Bản Thân - Bố cục Ngang</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Khung thông tin cá nhân (Bố cục ngang) -->
+    <div class="profile-card">
+        
+        <!-- Cột trái: Ảnh đại diện -->
+        <div class="image-section">
+            <img src="avatar.png" alt="Ảnh đại diện" class="profile-img" id="profileImg">
+        </div>
+        
+        <!-- Cột phải: Thông tin -->
+        <div class="info-section">
+            
+            <h1 class="name">Nguyễn Văn A</h1>
+            <p class="intro">"Tôi là một sinh viên đam mê công nghệ phần mềm, luôn thích tìm tòi học hỏi các công nghệ web mới để tạo ra những sản phẩm mang lại giá trị thực tế."</p>
+            
+            <!-- Lưới thông tin chi tiết -->
+            <div class="info-grid">
+                <div class="info-label">Ngày sinh:</div>
+                <div class="info-value">01/01/2004</div>
+                
+                <div class="info-label">Giới tính:</div>
+                <div class="info-value">Nam</div>
+                
+                <div class="info-label">Địa chỉ:</div>
+                <div class="info-value">Quận Hà Đông, Hà Nội</div>
+                
+                <div class="info-label">Email:</div>
+                <div class="info-value">nguyenvana@example.com</div>
+                
+                <div class="info-label">Điện thoại:</div>
+                <div class="info-value">0123 456 789</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal phóng to ảnh -->
+    <div id="imageModal" class="modal">
+        <span class="close-btn" id="closeBtn">&times;</span>
+        <img class="modal-content" id="expandedImg">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

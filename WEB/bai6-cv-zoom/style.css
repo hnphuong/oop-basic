@@ -1,0 +1,168 @@
+/* Đặt lại lề và font chữ mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Thẻ thông tin cá nhân - Bố cục Ngang */
+.profile-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    width: 100%;
+    max-width: 750px; /* Tăng chiều rộng để chứa 2 cột */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    
+    /* Thiết lập Flexbox ngang */
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 40px; /* Khoảng cách giữa ảnh và chữ */
+    
+    transition: transform 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Khu vực chứa ảnh (cột trái) */
+.image-section {
+    flex-shrink: 0; /* Ngăn không cho ảnh bị bóp méo khi thu nhỏ màn hình */
+}
+
+/* Ảnh đại diện hình tròn */
+.profile-img {
+    width: 160px; /* Phóng to ảnh một chút cho cân đối với bố cục ngang */
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #4facfe;
+    cursor: zoom-in;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+}
+
+/* Khu vực chứa thông tin (cột phải) */
+.info-section {
+    text-align: left; /* Căn lề trái cho chữ */
+}
+
+/* Tên và giới thiệu */
+.name {
+    font-size: 26px;
+    color: #2c3e50;
+    margin-bottom: 12px;
+}
+
+.intro {
+    font-size: 15px;
+    color: #666;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Bố cục lưới thông tin (Grid) */
+.info-grid {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+    font-size: 15px;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #34495e;
+}
+
+.info-value {
+    color: #555;
+}
+
+/* ------------------------------------- */
+/* CSS cho Modal (Popup phóng to ảnh)    */
+/* ------------------------------------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #e74c3c;
+}
+
+/* ------------------------------------- */
+/* Responsive cho thiết bị di động       */
+/* ------------------------------------- */
+@media screen and (max-width: 650px) {
+    .profile-card {
+        flex-direction: column; /* Chuyển lại thành bố cục dọc trên mobile */
+        text-align: center;
+        padding: 30px 20px;
+        gap: 20px;
+    }
+    
+    .info-section {
+        text-align: center; /* Căn giữa chữ trên mobile */
+    }
+
+    .info-grid {
+        text-align: left; /* Giữ bảng thông tin căn trái cho dễ đọc */
+    }
+}
