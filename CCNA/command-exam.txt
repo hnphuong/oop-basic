@@ -1,0 +1,235 @@
+! Cấu hình Multilayer Switch
+enable
+configure terminal
+hostname MLS-INSIDE
+no ip domain-lookup
+
+! Tạo VLAN
+vlan 10
+ name USERS_10
+exit
+vlan 20
+ name USERS_20
+exit
+
+! Gán cổng cho PC0 vào VLAN 10
+interface fastEthernet0/5
+ description PC0_VLAN10
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+ no shutdown
+exit
+
+! Gán cổng cho PC1 vào VLAN 20
+interface fastEthernet0/10
+ description PC1_VLAN20
+ switchport mode access
+ switchport access vlan 20
+ spanning-tree portfast
+ no shutdown
+exit
+
+! Bật định tuyến và tạo SVI (Gateway)
+ip routing
+interface vlan 10
+ description GATEWAY_VLAN10
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+exit
+interface vlan 20
+ description GATEWAY_VLAN20
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+exit
+
+! Cấu hình cổng Uplink lên ASA thành Routed Port
+interface gigabitEthernet0/1
+ description ROUTED_LINK_TO_ASA_INSIDE
+ no switchport
+ ip address 192.168.99.1 255.255.255.252
+ no shutdown
+exit
+
+! Định tuyến mặc định đẩy dữ liệu ra ASA
+ip route 0.0.0.0 0.0.0.0 192.168.99.2
+end
+write memory
+
+! Cấu hình Tường lửa Cisco ASA 5506-X (ASA-HQ)
+enable
+configure terminal
+hostname ASA-HQ
+domain-name ccna.lab
+enable password Ciscoenpa55
+passwd Ciscocopa55
+
+! Cấu hình các vùng mạng (Interfaces)
+interface gigabitEthernet1/1
+ description OUTSIDE_TO_R0
+ nameif outside
+ security-level 0
+ ip address 10.0.0.2 255.255.255.0
+ no shutdown
+exit
+
+interface gigabitEthernet1/2
+ description INSIDE_TO_MLS
+ nameif inside
+ security-level 100
+ ip address 192.168.99.2 255.255.255.252
+ no shutdown
+exit
+
+interface gigabitEthernet1/3
+ description DMZ_TO_SERVERS
+ nameif dmz
+ security-level 50
+ ip address 172.16.30.1 255.255.255.0
+ no shutdown
+exit
+
+! Định tuyến tĩnh
+route outside 0.0.0.0 0.0.0.0 10.0.0.1
+route inside 192.168.10.0 255.255.255.0 192.168.99.1
+route inside 192.168.20.0 255.255.255.0 192.168.99.1
+
+! Cấu hình NAT (PAT) cho VLAN 10 và VLAN 20
+object network NET_VLAN10
+ subnet 192.168.10.0 255.255.255.0
+ nat (inside,outside) dynamic interface
+exit
+object network NET_VLAN20
+ subnet 192.168.20.0 255.255.255.0
+ nat (inside,outside) dynamic interface
+exit
+
+! Cấu hình ACL cho phép Web và DNS từ Outside vào DMZ
+access-list OUTSIDE_IN extended permit tcp any host 172.16.30.20 eq 80
+access-list OUTSIDE_IN extended permit tcp any host 172.16.30.20 eq 443
+access-list OUTSIDE_IN extended permit udp any host 172.16.30.10 eq 53
+access-list OUTSIDE_IN extended permit tcp any host 172.16.30.10 eq 53
+access-group OUTSIDE_IN in interface outside
+
+! Cấu hình SSH chỉ cho phép VLAN 10 truy cập
+username admin password Ciscosecure123 privilege 15
+aaa authentication ssh console LOCAL
+crypto key generate rsa modulus 1024
+ssh 192.168.10.0 255.255.255.0 inside
+ssh version 2
+ssh timeout 5
+
+! Cấu hình Stateful Inspection cho ICMP (cho phép Ping)
+policy-map global_policy
+ class inspection_default
+  inspect icmp
+exit
+service-policy global_policy global
+
+end
+write memory
+
+! Cấu hình Router R0 (Kết nối ASA và OSPF)
+enable
+configure terminal
+hostname R0
+no ip domain-lookup
+
+! Cấu hình IP cổng nối ASA và cổng mạng OSPF Transit
+interface gigabitEthernet0/0
+ description TO_ASA_OUTSIDE
+ ip address 10.0.0.1 255.255.255.0
+ no shutdown
+exit
+interface gigabitEthernet0/1
+ description OSPF_TRANSIT
+ ip address 10.10.10.1 255.255.255.248
+ no shutdown
+exit
+
+! Định tuyến tĩnh hướng về ASA
+ip route 172.16.30.0 255.255.255.0 10.0.0.2
+ip route 192.168.10.0 255.255.255.0 10.0.0.2
+ip route 192.168.20.0 255.255.255.0 10.0.0.2
+
+! Cấu hình OSPF Process 10
+router ospf 10
+ router-id 1.1.1.1
+ network 10.10.10.0 0.0.0.7 area 0
+ network 10.0.0.0 0.0.0.255 area 0
+ passive-interface gigabitEthernet0/0
+ redistribute static subnets
+exit
+
+end
+write memory
+
+! Cấu hình Router R1 (Chi nhánh 1 - 100 hosts)
+enable
+configure terminal
+hostname R1
+
+! Cấu hình cổng
+interface gigabitEthernet0/0
+ description OSPF_TRANSIT
+ ip address 10.10.10.2 255.255.255.248
+ no shutdown
+exit
+interface gigabitEthernet0/1
+ description BRANCH_100_HOSTS
+ ip address 172.16.10.1 255.255.255.128
+ no shutdown
+exit
+
+! Cấu hình OSPF
+router ospf 10
+ router-id 2.2.2.2
+ network 10.10.10.0 0.0.0.7 area 0
+ network 172.16.10.0 0.0.0.127 area 0
+ passive-interface gigabitEthernet0/1
+exit
+
+end
+write memory
+
+! Cấu hình Router R2 (Chi nhánh 2 - 60 hosts)
+enable
+configure terminal
+hostname R2
+
+! Cấu hình cổng
+interface gigabitEthernet0/0
+ description OSPF_TRANSIT
+ ip address 10.10.10.3 255.255.255.248
+ no shutdown
+exit
+interface gigabitEthernet0/1
+ description BRANCH_60_HOSTS
+ ip address 172.16.20.1 255.255.255.192
+ no shutdown
+exit
+
+! Cấu hình OSPF
+router ospf 10
+ router-id 3.3.3.3
+ network 10.10.10.0 0.0.0.7 area 0
+ network 172.16.20.0 0.0.0.63 area 0
+ passive-interface gigabitEthernet0/1
+exit
+
+end
+write memory
+
+Trên Multilayer Switch:
+show vlan brief: Kiểm tra VLAN và cổng Access.  
+show ip interface brief: Kiểm tra trạng thái UP/DOWN của cổng và SVI.  
+show ip route: Kiểm tra bảng định tuyến.  
+Trên Router:
+show ip ospf neighbor: Xác nhận các Router đã làm hàng xóm OSPF với nhau.  
+show ip route ospf: Kiểm tra các tuyến đường học qua OSPF.  
+Trên ASA:
+show interface ip brief: Kiểm tra IP cổng.  
+show nameif: Kiểm tra tên vùng và security-level.  
+show route: Xem bảng định tuyến.  
+show access-list: Xem số lần hit của luật chặn/cho phép.  
+show nat và show xlate: Kiểm tra tình trạng NAT.  

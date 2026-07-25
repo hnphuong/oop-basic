@@ -1,0 +1,46 @@
+### 1. Sử dụng "Vũ khí tối thượng": Phím `Tab` và Dấu `?`
+
+Hệ điều hành Cisco IOS được thiết kế để hỗ trợ người dùng tối đa. Bạn không bao giờ cần gõ đủ một câu lệnh dài ngoằng.
+
+* **Dấu hỏi chấm (`?`):** Bất cứ khi nào bạn quên từ tiếp theo là gì, hãy gõ `?`.
+* *Ví dụ:* Cấu hình IP mà quên cú pháp, gõ `ip ?`. 
+Hệ thống sẽ liệt kê các từ khóa có thể đi sau từ `ip` (như `address`, `route`, `domain-lookup`).
+
+* **Phím `Tab` (Tự động điền):** Chỉ cần gõ 2-3 chữ cái đầu rồi bấm `Tab`, 
+hệ thống sẽ tự hoàn thành nốt từ đó.
+* *Ví dụ:* Gõ `int f0/5` -> bấm Tab -> hệ thống tự điền thành `interface FastEthernet0/5`. 
+Vừa nhanh vừa không bao giờ lo sai chính tả.
+
+### 2. Nắm vững Logic các Chế độ (Mode)
+
+Rất nhiều người gõ lệnh báo lỗi vì đứng sai "chỗ". Bạn chỉ cần nhớ cấu trúc 3 tầng cơ bản này:
+
+* `Switch> ` **(Chế độ User):** Chỉ để xem lướt qua, không làm được gì nhiều. (Gõ `enable` để đi tiếp).
+* `Switch# ` **(Chế độ Đặc quyền):** Tầng này dùng để **Kiểm tra** (tất cả các lệnh `show`, `ping`, `write` đều gõ ở đây).
+* `Switch(config)# ` **(Chế độ Cấu hình):** Tầng này dùng để **Thay đổi hệ thống** (tạo VLAN, đặt IP, tạo Route). Đang ở chế độ con (như `config-if`) mà muốn lùi lại thì gõ `exit`.
+
+### 3. Tư duy cấu hình theo mô hình từ dưới lên (Bottom-up)
+
+Đừng cấu hình lung tung mỗi thiết bị một ít. Hãy làm theo trình tự lớp mạng, gỡ rối từ dưới lên:
+
+* **Bước 1 - Lớp Vật lý & IP (Layer 1, 2, 3):** Bật các cổng (no shutdown), 
+gán VLAN, đặt IP cho PC, SVI, và Router.
+* **Bước 2 - Định tuyến (Routing):** Khi đã có IP, 
+phải chỉ đường cho chúng thấy nhau (ip route, OSPF).
+* **Bước 3 - Bảo vệ (Security/NAT):** Mạng đã thông suốt rồi mới bắt đầu xây "tường" 
+(chặn ACL, cấu hình NAT, Security Level trên ASA). Làm bước này trước khi mạng thông sẽ khiến bạn không biết lỗi do định tuyến hay do bị chặn.
+
+### 4. Học thuộc nhóm lệnh "Kiểm tra" thay vì lệnh "Cấu hình"
+
+Nếu bạn biết cách kiểm tra, bạn sẽ tự biết mình đang thiếu cấu hình gì. 
+Hãy ghi ra giấy 3 câu lệnh thần chú này và gõ liên tục trong quá trình làm:
+
+* `show ip interface brief`: Khám bệnh nhanh xem cổng nào chưa bật (`down`), cổng nào gõ sai IP.
+* `show ip route`: Khám bệnh định tuyến xem Switch/Router đã biết đường đi chưa.
+* `show running-config`: Xem lại toàn bộ phác đồ điều trị mình vừa gõ vào.
+
+### 5. Viết nháp ra Text/Notepad trước
+
+Trong lúc luyện tập hoặc thi, hãy mở một file Notepad. 
+Gõ kịch bản cấu hình vào đó trước, đọc lại xem logic chưa, rồi copy - paste (nhấp chuột phải) 
+vào Packet Tracer. Cách này giúp bạn nhìn được tổng thể bức tranh, dễ sửa lỗi và rèn luyện tư duy rất tốt.
