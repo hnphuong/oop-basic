@@ -1,0 +1,106 @@
+/* Đặt lại lề và font chữ mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.name {
+    font-size: 22px;
+    color: #0b4b9b;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.form-title {
+    font-size: 22px;
+    color: #0b4b9b;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+/* Khung form */
+.form-container {
+    background-color: #ffffff;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* Nhóm các trường nhập liệu */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Ô nhập liệu */
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+/* Hiệu ứng khi Hover hoặc Focus vào ô nhập liệu */
+input:hover, input:focus {
+    border-color: #1a82c3;
+    outline: none;
+    box-shadow: 0 0 8px rgba(26, 130, 195, 0.2);
+}
+
+/* Dòng thông báo lỗi */
+.error-msg {
+    color: #e74c3c; /* Màu đỏ cảnh báo */
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+    min-height: 18px; /* Giữ khoảng trống cố định để form không bị giật khi hiện lỗi */
+}
+
+/* Nút Đăng ký */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #1a82c3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hiệu ứng Hover cho nút bấm */
+.submit-btn:hover {
+    background-color: #0b4b9b;
+    transform: translateY(-2px); /* Nhấc nhẹ nút lên */
+}

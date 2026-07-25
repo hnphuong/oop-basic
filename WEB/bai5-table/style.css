@@ -1,0 +1,148 @@
+/* Đặt lại lề mặc định */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.name {
+    font-size: 22px;
+    color: #0b4b9b;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.form-title {
+    font-size: 22px;
+    color: #0b4b9b;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 900px;
+}
+
+h2 {
+    text-align: center;
+    color: #0b4b9b;
+    margin-bottom: 25px;
+}
+
+/* Khu vực tìm kiếm */
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.search-box input {
+    padding: 10px 15px;
+    width: 350px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+
+.search-box input:focus {
+    border-color: #1a82c3;
+    outline: none;
+}
+
+.search-box button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.search-box button:active {
+    transform: scale(0.95);
+}
+
+#searchBtn {
+    background-color: #1a82c3;
+    color: white;
+}
+
+#searchBtn:hover {
+    background-color: #0b4b9b;
+}
+
+#resetBtn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+#resetBtn:hover {
+    background-color: #c0392b;
+}
+
+/* Định dạng Bảng */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Gộp đường viền */
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 14px;
+    text-align: center; /* Căn giữa văn bản */
+}
+
+th {
+    background-color: #1a82c3;
+    color: white;
+    font-weight: 600;
+}
+
+/* Màu nền xen kẽ cho các hàng (Chẵn) */
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Hiệu ứng Hover cho hàng */
+tbody tr:hover {
+    background-color: #e3f2fd;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Lớp ẩn phần tử */
+.hidden {
+    display: none !important;
+}
+
+/* Thông báo không tìm thấy sản phẩm */
+#noResultMessage {
+    text-align: center;
+    color: #e74c3c;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fdf3f2;
+    border: 1px dashed #e74c3c;
+    border-radius: 8px;
+}

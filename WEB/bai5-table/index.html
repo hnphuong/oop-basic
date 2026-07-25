@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Sản Phẩm</title>
+    <!-- Liên kết đến tệp CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="name">B22DTCN066 - Nguyễn Văn Minh - D22TXCN02-B</h2>
+        <hr/>
+        <h2 class="form-title">DANH SÁCH SẢN PHẨM</h2>
+        
+        <!-- Khu vực tìm kiếm -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Nhập tên sản phẩm cần tìm...">
+            <button id="searchBtn">Tìm kiếm</button>
+            <button id="resetBtn">Hiển thị tất cả</button>
+        </div>
+
+        <!-- Bảng hiển thị sản phẩm -->
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Danh Mục</th>
+                    <th>Giá</th>
+                    <th>Tình Trạng</th>
+                </tr>
+            </thead>
+            <tbody id="productBody">
+                <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
+            </tbody>
+        </table>
+        
+        <!-- Thông báo không tìm thấy (mặc định ẩn) -->
+        <p id="noResultMessage" class="hidden">Không có sản phẩm phù hợp</p>
+    </div>
+
+    <!-- Liên kết đến tệp JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

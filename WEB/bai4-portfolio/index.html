@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="gallery-container">
+        <h2 class="name">B22DTCN066 - Nguyễn Văn Minh - D22TXCN02-B</h2>
+        <hr/>
+        <h1 class="gallery-title">Bộ Sưu Tập Ảnh Của Tôi</h1>
+
+        <!-- Lưới ảnh (CSS Grid) -->
+        <div class="grid-gallery">
+            <div class="img-wrapper">
+                <img src="image.jpg" alt="Cảnh núi non" data-name="Bình minh rực rỡ trên dãy núi tuyết">
+            </div>
+            <div class="img-wrapper">
+                <img src="image.jpg" alt="Hồ nước" data-name="Hồ nước xanh thẳm phản chiếu bầu trời">
+            </div>
+            <div class="img-wrapper">
+                <img src="image.jpg" alt="Rừng thông" data-name="Rừng thông sương mù giăng lối">
+            </div>
+            <div class="img-wrapper">
+                <img src="image.jpg" alt="Cầu treo" data-name="Cây cầu gỗ vắt ngang qua dòng suối">
+            </div>
+        </div>
+
+        <!-- Khu vực hiển thị mô tả và nút Xóa chọn -->
+        <div class="info-section">
+            <p id="image-name">Vui lòng nhấp vào một bức ảnh để xem mô tả.</p>
+            <!-- Nút này mặc định sẽ bị ẩn bằng CSS -->
+            <button id="clear-btn" class="hidden">Xóa chọn</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

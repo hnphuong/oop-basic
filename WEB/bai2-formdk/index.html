@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Đăng Ký Tài Khoản</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2 class="name">B22DTCN066 - Nguyễn Văn Minh - D22TXCN02-B</h2>
+        <hr/>
+        <h2 class="form-title">Đăng Ký Tài Khoản</h2>
+        <!-- Form đăng ký -->
+        <form id="registerForm">
+            
+            <!-- Trường Họ tên -->
+            <div class="form-group">
+                <label for="fullname">Họ và tên</label>
+                <input type="text" id="fullname" placeholder="Nhập họ và tên">
+                <small class="error-msg" id="nameError"></small>
+            </div>
+
+            <!-- Trường Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" placeholder="Nhập địa chỉ email">
+                <small class="error-msg" id="emailError"></small>
+            </div>
+
+            <!-- Trường Mật khẩu -->
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" placeholder="Tối thiểu 6 ký tự">
+                <small class="error-msg" id="passwordError"></small>
+            </div>
+
+            <!-- Trường Xác nhận mật khẩu -->
+            <div class="form-group">
+                <label for="confirmPassword">Xác nhận mật khẩu</label>
+                <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu">
+                <small class="error-msg" id="confirmPasswordError"></small>
+            </div>
+
+            <!-- Nút Submit -->
+            <button type="submit" class="submit-btn">Đăng Ký</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

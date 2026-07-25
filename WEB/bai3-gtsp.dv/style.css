@@ -1,0 +1,126 @@
+/* Đặt lại lề và box-sizing mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 40px 20px;
+}
+
+/* Khung chứa tổng thể */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.name {
+    font-size: 28px;
+    color: #0b4b9b;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    margin-top: 15px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+/* ------------------------------------- */
+/* CSS Grid cho Bố cục Sản phẩm          */
+/* ------------------------------------- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Desktop: 3 cột đều nhau */
+    gap: 30px; /* Khoảng cách giữa các thẻ */
+}
+
+/* Thẻ sản phẩm */
+.product-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hiệu ứng hover nổi thẻ lên */
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Ảnh sản phẩm */
+.product-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Tên sản phẩm */
+.product-name {
+    font-size: 20px;
+    color: #1a82c3;
+    margin-bottom: 10px;
+}
+
+/* Mô tả ngắn */
+.product-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    height: 60px; /* Giữ chiều cao cố định để thẻ bằng nhau */
+}
+
+/* Giá sản phẩm */
+.product-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+/* Nút Mua ngay */
+.buy-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buy-btn:hover {
+    background-color: #219150;
+}
+
+/* ------------------------------------- */
+/* Responsive cho thiết bị di động       */
+/* ------------------------------------- */
+@media screen and (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: 1fr; /* Mobile: 1 cột */
+        gap: 20px;
+    }
+    
+    .product-desc {
+        height: auto; /* Bỏ giới hạn chiều cao mô tả trên mobile */
+    }
+}
