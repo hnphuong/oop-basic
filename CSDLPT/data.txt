@@ -1,0 +1,57 @@
+./yt-dlp.exe \
+--js-runtimes node \
+--cookies-from-browser chrome \
+"https://www.youtube.com/watch?v=dbF1q9nE3OY"
+
+Đúng, lỗi Firefox này đơn giản hơn: **máy bạn không có Firefox profile chứa cookie**, nên yt-dlp không tìm thấy database.
+
+Vậy hiện tại nên quay lại xử lý **Chrome**, vì Chrome mới là nơi bạn đang đăng nhập YouTube.
+
+### Làm bước này trước
+
+Đóng Chrome hoàn toàn:
+
+```powershell
+taskkill /F /IM chrome.exe
+```
+
+Sau đó kiểm tra:
+
+```powershell
+Get-Process chrome -ErrorAction SilentlyContinue
+```
+
+Nếu **không trả về gì**, chạy:
+
+```powershell
+.\yt-dlp.exe --cookies-from-browser chrome "https://www.youtube.com/watch?v=dbF1q9nE3OY"
+
+Tạm thời bỏ `--js-runtimes node` đi — nó không liên quan đến lỗi cookie hiện tại.
+
+### Nếu vẫn nhận:
+
+```text
+ERROR: Could not copy Chrome cookie database
+```
+
+thì **đừng xóa cookie, đừng xóa profile Chrome**. Tôi sẽ giúp bạn xác định Chrome đang dùng profile nào và tại sao database bị khóa.
+
+Chạy lệnh này và gửi tôi kết quả:
+
+```powershell
+Get-ChildItem "$env:LOCALAPPDATA\Google\Chrome\User Data" -Directory | Select-Object Name
+
+
+Sau đó tôi có thể hướng dẫn tiếp chính xác cho Chrome của bạn.
+
+-CMCPjk5XUA
+
+.\yt-dlp.exe --js-runtimes node --cookies-from-browser firefox "https://www.youtube.com/watch?v=vhlIkKDvL6A"
+
+.\yt-dlp.exe --js-runtimes node --cookies-from-browser firefox -f "bestaudio" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=h2Y01l5P3C4"
+
+.\yt-dlp.exe --js-runtimes node --cookies-from-browser firefox -f bestaudio "https://www.youtube.com/watch?v=46CR5its4b4"
+
+.\yt-dlp.exe --js-runtimes node --cookies-from-browser firefox -f bestaudio --audio-quality 0 "https://www.youtube.com/watch?v=d_UdRuKpCt4&list=PLzApfFaCmVbGQjL-WlN56FNDQKh3byWk3"
+
+.\yt-dlp.exe --js-runtimes node --cookies-from-browser firefox -f bestaudio -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=-669b14MaHc&list=PLwg4gVfnhsNoQUUZVviOZF8xfaZsNb9Aa"
