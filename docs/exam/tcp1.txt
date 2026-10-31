@@ -1,0 +1,9 @@
+Một chương trình server cho phép kết nối qua giao thức TCP tại cổng 2211, sử dụng SocketChannel và ByteBuffer để trao đổi dữ liệu theo frame.
+Yêu cầu
+a. Gửi frame đầu tiên gồm 04 byte độ dài big-endian và payload UTF-8 là chuỗi studentCode;qCode. Ví dụ payload: B21DCCN001;9F8E7D6C.
+b. Nhận đúng 02 frame liên tiếp, nối payload theo thứ tự để được danh sách bản ghi id,type,score phân tách bằng |. Ví dụ: R500,AUTH,90|R501,PAY,45.
+c. Phân loại id vào PASS nếu score >= 80, REVIEW nếu score từ 50 đến 79, và FAIL nếu score nhỏ hơn 50; giữ thứ tự xuất hiện.
+d. Gửi một frame kết quả theo định dạng PASS=id,id;REVIEW=id;FAIL=id. Ví dụ: PASS=R500;REVIEW=;FAIL=R501.
+e. Đóng kết nối hoặc kết thúc client sau khi nộp kết quả.
+studentCode = K25DTCN301
+qCode = I69l7WRQ
